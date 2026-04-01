@@ -1,0 +1,8 @@
+{
+	"InstallScripts" : 
+	[
+		"/home/r13x/CLionProjects/atta_game2/cmake-build-debug/cmake_install.cmake",
+		"/home/r13x/CLionProjects/atta_game2/cmake-build-debug/Engine/cmake_install.cmake"
+	],
+	"Parallel" : false
+}
