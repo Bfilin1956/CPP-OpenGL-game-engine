@@ -2,7 +2,7 @@
 
 ## Demo
 
-https://your-video-link-here
+[Video](https://youtu.be/DF-7yCDxuPU)
 
 ## Description
 CPP-OpenGL-game-engine is a lightweight game engine written in C++ using OpenGL.  
@@ -11,31 +11,10 @@ The project focuses on low-level rendering, performance, and understanding core 
 It is designed as a learning-oriented engine with practical implementations of rendering techniques and resource management.
 
 ## Features / Keywords
-- C++
-- OpenGL
-- Assimp (model loading)
-- .obj support
-- Batching (render optimization)
-- Lighting (basic lighting models)
-- Shader system
-- Camera system
-- Input handling
-- Texture loading
-- Transform system
-- Scene structure
+- C++ 20, OpenGL, Assimp (model loading), .obj support, Batching (render optimization), Lighting (basic lighting models), Shader system, Camera system, Input handling, Texture loading, Transform system, Scene structure
 
 ## Screenshots
 
-### Scene 1
-![Screenshot 1](path/to/image1.png)
+!<img width="1362" height="693" alt="image" src="https://github.com/user-attachments/assets/7e9f97f5-fd8f-4f7e-b473-08fe56009da0" />
+!<img width="1365" height="693" alt="image" src="https://github.com/user-attachments/assets/a817b62e-81ea-4fc4-9f09-54eea2a5e2d9" />
 
-### Scene 2
-![Screenshot 2](path/to/image2.png)
-
-## Build
-```bash
-git clone https://github.com/your-username/CPP-OpenGL-game-engine.git
-cd CPP-OpenGL-game-engine
-mkdir build && cd build
-cmake ..
-cmake --build .
