@@ -1,0 +1,14 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project version="4">
+  <component name="VcsDirectoryMappings">
+    <mapping directory="$PROJECT_DIR$" vcs="Git" />
+    <mapping directory="$PROJECT_DIR$/thirdparty/SDL2" vcs="Git" />
+    <mapping directory="$PROJECT_DIR$/thirdparty/assimp" vcs="Git" />
+    <mapping directory="$PROJECT_DIR$/thirdparty/glew" vcs="Git" />
+    <mapping directory="$PROJECT_DIR$/thirdparty/glew/auto/EGL-Registry" vcs="Git" />
+    <mapping directory="$PROJECT_DIR$/thirdparty/glew/auto/OpenGL-Registry" vcs="Git" />
+    <mapping directory="$PROJECT_DIR$/thirdparty/glew/auto/glfixes" vcs="Git" />
+    <mapping directory="$PROJECT_DIR$/thirdparty/glm" vcs="Git" />
+    <mapping directory="$PROJECT_DIR$/thirdparty/imgui" vcs="Git" />
+  </component>
+</project>

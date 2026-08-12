@@ -1,0 +1,97 @@
+#pragma once
+#include "Light.h"
+#include "RenderObject.h"
+#include "Scene.h"
+#include "TextureLoader.h"
+
+void drawObject(RenderObject& obj,
+                glm::mat4& view,
+                glm::mat4& projection,
+                glm::vec3 viewPos)
+{
+    auto* material = obj.material;
+    auto* shader = material->shader;
+
+    shader->use();
+
+    shader->setMat4_mat4("model", obj.model);
+    shader->setMat4_mat4("view", view);
+    shader->setMat4_mat4("projection", projection);
+
+    shader->setVec3("viewPos", viewPos.x, viewPos.y, viewPos.z);
+
+    // текстура
+    GLuint texID = textureLoader_.getIdTexture(obj.textureName);
+    if (texID != 0) {
+        glActiveTexture(GL_TEXTURE0);
+        glBindTexture(GL_TEXTURE_2D, texID);
+        shader->setInt("uTexture", 0);
+    }
+
+    obj.mesh->draw();
+}
+void drawDynamic(std::vector<RenderObject>& objects,
+                 glm::mat4& view,
+                 glm::mat4& projection,
+                 glm::vec3 viewPos)
+{
+    for (auto& obj : objects) {
+        drawObject(obj, view, projection, viewPos);
+    }
+}
+void applyLights(Shader* shader, const std::vector<Light>& lights)
+{
+    for (int i = 0; i < lights.size(); i++) {
+        std::string base = "lights[" + std::to_string(i) + "]";
+        shader->setVec3(base + ".position",
+                        lights[i].position.x,
+                        lights[i].position.y,
+                        lights[i].position.z);
+    }
+
+    shader->setInt("lightCount", (int)lights.size());
+}
+void drawStatic(std::vector<RenderObject>& objects,
+                glm::mat4& view,
+                glm::mat4& projection,
+                glm::vec3 viewPos)
+{
+    for (auto& obj : objects) {
+        drawObject(obj, view, projection, viewPos);
+    }
+}
+class Renderer {
+    TextureLoader &textureLoader_;
+
+public:
+    explicit Renderer(TextureLoader &textureLoader): textureLoader_(textureLoader){}
+    void draw(Scene &scene,
+              glm::mat4& view,
+              glm::mat4& projection,
+              glm::vec3 viewPos) {
+
+        for (auto&[mesh, material, model, aabb, textureName] : scene.staticObjects) {
+
+            material->apply();
+
+            // матрицы
+            material->shader->setMat4_mat4("model", model);
+            material->shader->setMat4_mat4("view", view);
+            material->shader->setMat4_mat4("projection", projection);
+            material->shader->setVec3("lightPos", light.x, light.y, light.z);
+            material->shader->setVec3("viewPos", viewPos.x, viewPos.y, viewPos.z);
+            //material->shader->setVec3("uColor", material->color[0],
+                //material->color[1], material->color[2]);
+
+            GLuint texID = textureLoader_.getIdTexture(textureName);
+            if (texID != 0) {
+                glActiveTexture(GL_TEXTURE0);
+                glBindTexture(GL_TEXTURE_2D, texID);
+                material->shader->setInt("uTexture", 0);
+            }
+
+            mesh->draw();
+        }
+    }
+};
+
