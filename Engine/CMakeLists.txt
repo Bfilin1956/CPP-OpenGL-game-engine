@@ -11,6 +11,8 @@ add_library(engine STATIC
         Resources/ResourceManager.h
         Core/Time.cpp
         Core/Time.h
+        Rendering/RenderSystem.cpp
+        Rendering/RenderSystem.h
 
 )
 

@@ -18,7 +18,6 @@ TextureLoader &TextureLoader::instance() {
 }
 
 void TextureLoader::init(const std::string &folderPath) {
-
     for (const auto& entry : fs::directory_iterator(folderPath)) {
         if (!entry.is_regular_file()) continue;
         if (const auto& path = entry.path(); path.extension() == ".png") {

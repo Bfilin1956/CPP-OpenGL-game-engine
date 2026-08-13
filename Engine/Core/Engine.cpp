@@ -4,13 +4,14 @@
 
 #include "Resources/ModelLoader.h"
 #include "Rendering/ShaderManager.h"
-#include "Resources/Model.h"
+#include "Time.h"
+#include "Rendering/RenderSystem.h"
 
 void Engine::run() {
-    const auto inst = &Engine::instance();
-    while (inst->running_) {
-        inst->update();
-        inst->render();
+    Engine& engine = instance();
+    while (engine.running_) {
+        engine.update();
+        RenderSystem::instance().render( engine.scene_, engine.camera_);
     }
 }
 
@@ -19,40 +20,18 @@ Engine &Engine::instance() {
     return inst;
 }
 
-void Engine::setWindow(Window *window) {
-    window_ = window;
-}
-
-std::chrono::time_point<std::chrono::system_clock> lastTime_ = std::chrono::high_resolution_clock::now();
-
-float Engine::getDeltaTime() {
-    const auto now = std::chrono::high_resolution_clock::now();
-    const float deltaTime = std::chrono::duration<float>(now - lastTime_).count();
-    lastTime_ = now;
-    return deltaTime;
-}
-
 void Engine::init() {
-    renderer_ = &Renderer::instance();
-    physicsWorld_ = &PhysicsWorld::instance();
-    physicsWorld_->setScene(&scene_);
-    characterController_ = new CharacterController(PhysicsWorld::instance());
-    auto *shaderPtr = new Shader(ShaderManager::get("skybox"));
-    shaders_["skybox"] = shaderPtr;
-    shaderPtr = new Shader(ShaderManager::get("basic"));
-    shaders_["basic"] = shaderPtr;
-    skybox_ = new Skybox(TextureLoader::instance().getSkyboxArray(), *shaders_["skybox"]);
+    PhysicsWorld::instance().setScene(&scene_);
+    characterController_ = std::make_unique<CharacterController>(PhysicsWorld::instance());
+    shaders_["skybox"] = std::make_unique<Shader>(ShaderManager::get("skybox"));
+    shaders_["basic"] = std::make_unique<Shader>(ShaderManager::get("basic"));
+    skybox_ = std::make_unique<Skybox>(TextureLoader::instance().getSkyboxArray(), *shaders_["skybox"]);
+    RenderSystem::instance().setSkyBox(skybox_.get());
 
-    inputManager_ = &InputManager::instance();
     playerController_.setPlayer(player_);
     playerController_.setCamera(camera_);
 
-    TextureLoader::instance().init();
-}
-
-Engine::~Engine() {
-    delete characterController_;
-    for (const auto& ptr : shaders_) delete ptr.second;
+    TextureLoader::instance().init("texture");
 }
 
 Scene &Engine::getScene() {
@@ -64,15 +43,17 @@ Shader* Engine::getShader(const std::string& nameShader) {
     if (it == shaders_.end()) {
         return nullptr;
     }
-    return it->second;
+    return it->second.get();
 }
 
 void Engine::update() {
-    auto deltaTime = getDeltaTime();
-    inputManager_->update();
-    if (inputManager_->isPressed(SDL_SCANCODE_ESCAPE)) {
+    Time::instance().update();
+    auto deltaTime = Time::instance().deltaTime();
+    auto &inputManager = InputManager::instance();
+    inputManager.update();
+    if (inputManager.isPressed(SDL_SCANCODE_ESCAPE)) {
         running_ = false;
-    } else if (inputManager_->isPressed(SDL_SCANCODE_F1)) {
+    } else if (inputManager.isPressed(SDL_SCANCODE_F1)) {
         if (mouseLookEnabled_ == SDL_TRUE) mouseLookEnabled_ = SDL_FALSE;
         else mouseLookEnabled_ = SDL_TRUE;
         SDL_SetRelativeMouseMode(mouseLookEnabled_);
@@ -81,17 +62,5 @@ void Engine::update() {
     characterController_->update(player_, deltaTime);
     //camera_.follow(player_.position());
     camera_.update(mouseLookEnabled_, player_);
-}
-
-void Engine::render() {
-    glClearColor(0.1f, 0.1f, 0.1f, 1.0f);
-    glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
-
-    glm::mat4 view = camera_.getViewMatrix();
-    glm::mat4 projection = glm::perspective(glm::radians(45.0f), window_->getAspectRatio(), 0.1f, 100.0f);
-
-    skybox_->draw(camera_, projection);
-    renderer_->draw(scene_, view, projection, camera_.position());
-    window_->swapBuffers();
 }
 

@@ -12,7 +12,6 @@ public:
     InputManager(InputManager&&) = delete;
     InputManager& operator=(InputManager&&) = delete;
 
-    void setWindow(const Window &window);
     void update();
     bool isHeld(SDL_Scancode key) const;
     bool isPressed(SDL_Scancode key) const;
@@ -22,7 +21,6 @@ public:
     float& getMouseDY();
 
 private:
-    Window window_{};
 
     float mouseDX_{};
     float mouseDY_{};

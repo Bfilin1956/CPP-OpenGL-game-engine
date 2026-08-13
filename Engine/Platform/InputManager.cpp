@@ -6,10 +6,6 @@ InputManager &InputManager::instance() {
     return inst;
 }
 
-void InputManager::setWindow(const Window &window) {
-    window_ = window;
-}
-
 void InputManager::update() {
     mouseDX_ = mouseDY_ = 0;
     pressed_.clear();
@@ -41,7 +37,7 @@ void InputManager::update() {
             case SDL_WINDOWEVENT: {
                 if (e.window.event == SDL_WINDOWEVENT_RESIZED) {
                     glViewport(0, 0, e.window.data1, e.window.data2);
-                    window_.setSize(e.window.data1, e.window.data2);
+                    Window::instance().setSize(e.window.data1, e.window.data2);
                 }
             }
             default: {
