@@ -4,8 +4,8 @@
 class Window {
     SDL_Window* window_ = nullptr;
     SDL_GLContext context_ = nullptr;
-    int width_ = 800;
-    int height_ = 600;
+    int width_{800};
+    int height_{600};
 public:
     bool init(const char* title, int width, int height);
     void swapBuffers() const;
@@ -13,4 +13,11 @@ public:
     [[nodiscard]] float getAspectRatio() const;
     void setSize(int w, int h);
     void updateSize();
+
+    static Window &instance();
+    Window() = default;
+    Window(const Window&) = delete;
+    Window& operator=(const Window&) = delete;
+    Window(Window&&) = delete;
+    Window& operator=(Window&&) = delete;
 };

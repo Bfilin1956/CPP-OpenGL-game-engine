@@ -6,9 +6,7 @@
 #include <GL/glew.h>
 
 Skybox::Skybox(const std::span<std::string> faces, Shader& shader)
-    : cubeMapTexture_(loadCubeMap(faces)), shader_(shader)
-{
-    //cubemapTexture_ = loadCubemap(faces);
+    : cubeMapTexture_(loadCubeMap(faces)), shader_(shader) {
     setupMesh();
 }
 

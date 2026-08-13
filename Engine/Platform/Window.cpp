@@ -4,6 +4,11 @@
 #include <GL/glew.h>
 #include "Core/Logger.h"
 
+Window &Window::instance() {
+    static Window inst;
+    return inst;
+}
+
 bool Window::init(const char* title, int width, int height) {
     if (SDL_Init(SDL_INIT_VIDEO | SDL_INIT_AUDIO) != 0) {
         std::string error = "SDL Init Failed: ";

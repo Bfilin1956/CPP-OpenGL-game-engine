@@ -8,11 +8,10 @@
 
 
 int main() {
-    Window window;
-    window.init("Easy", 1280, 720);
+
+    Window::instance().init("Easy", 1280, 720);
 
     Engine::instance().init();
-    Engine::instance().setWindow(&window);
 
     ResourceManager::instance().registerObject("assets/platform.obj", {0,-1,0});
     ResourceManager::instance().registerObject("assets/roof.obj", {15,1,10});
@@ -21,6 +20,6 @@ int main() {
 
     Engine::run();
 
-    window.shutdown();
+    Window::instance().shutdown();
     return 0;
 }

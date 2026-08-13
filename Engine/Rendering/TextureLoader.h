@@ -6,7 +6,7 @@
 
 class TextureLoader {
     std::unordered_map<std::string, unsigned int> textures_;
-    std::array<std::string, 6> skyboxFaces_{"texture/skybox/left.png", "texture/skybox/right.png", "texture/skybox/up.png", "texture/skybox/down.png", "texture/skybox/front.png", "texture/skybox/back.png"};
+    std::array<std::string, 6> skyboxFaces_{"skybox/left.png", "skybox/right.png", "skybox/up.png", "skybox/down.png", "skybox/front.png", "skybox/back.png"};
 public:
     unsigned int getIdTexture(const std::string& nameTexture);
     void init(const std::string &folderPath = "texture");
