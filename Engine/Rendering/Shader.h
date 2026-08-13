@@ -3,10 +3,12 @@
 #include <unordered_map>
 #include <glm/fwd.hpp>
 
+#include "GL/glew.h"
+
 class Shader {
-    unsigned int id_{};
+    int getLocation(const std::string& name);
 public:
-    Shader(unsigned int id);
+    Shader(GLuint id);
     void use() const;
     void setMat4(const std::string& name, const float* value);
     void setMat4_mat4(const std::string& name, glm::mat4& value);
@@ -14,8 +16,7 @@ public:
     void setInt(const std::string& name, unsigned int x);
     void setFloat(const std::string& name, float x);
 private:
+    unsigned int id_{};
     std::unordered_map<std::string, int> cache;
 
-private:
-    int getLocation(const std::string& name);
 };

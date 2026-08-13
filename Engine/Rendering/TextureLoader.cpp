@@ -12,6 +12,11 @@ unsigned int TextureLoader::getIdTexture(const std::string& nameTexture) {
     return 0;
 }
 
+TextureLoader &TextureLoader::instance() {
+    static TextureLoader inst;
+    return inst;
+}
+
 void TextureLoader::init(const std::string &folderPath) {
 
     for (const auto& entry : fs::directory_iterator(folderPath)) {
@@ -44,7 +49,7 @@ GLuint TextureLoader::loadTexture(const std::string& path) {
     if (data) {
         GLenum format = (channels == 4) ? GL_RGBA : GL_RGB;
 
-        glTexImage2D(GL_TEXTURE_2D, 0, format,
+        glTexImage2D(GL_TEXTURE_2D, 0, (int)format,
                      width, height, 0,
                      format, GL_UNSIGNED_BYTE, data);
 

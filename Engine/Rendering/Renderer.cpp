@@ -2,9 +2,10 @@
 #include <glm/glm.hpp>
 #include <glm/gtc/matrix_transform.hpp>
 
-
-
-Renderer::Renderer(TextureLoader &textureLoader): textureLoader_(textureLoader){}
+Renderer &Renderer::instance() {
+    static Renderer inst;
+    return inst;
+}
 
 void Renderer::applyLights(Shader* shader, const std::vector<Light>& lights)
 {
@@ -50,12 +51,7 @@ void Renderer::draw(Scene &scene,
 
         obj.material->shader->setFloat("ambientStrength", 0.1f);
         obj.material->shader->setFloat("shininess", 32.0f);
-        /*if (GLuint texID = textureLoader_.getIdTexture(obj.textureName)) {
-            glActiveTexture(GL_TEXTURE0);
-            glBindTexture(GL_TEXTURE_2D, texID);
 
-            obj.material->shader->setInt("uTexture", 0);
-        }*/
 
         for (unsigned int i = 0; i < obj.model->meshes.front().textures_.size(); i++) {
 
@@ -71,15 +67,6 @@ void Renderer::draw(Scene &scene,
         }
     }
 
-
-
-    /*std::unordered_map<Shader*, std::vector<RenderObject*>> batches;
-
-    buildBatches(scene.staticObjects, batches);
-    drawBatches(batches, view, projection, viewPos);
-
-    buildBatches(scene.dynamicObjects, batches);
-    drawBatches(batches, view, projection, viewPos);*/
 }
 
 void Renderer::drawBatches(std::unordered_map<Shader*, std::vector<RenderObject*>>& batches, glm::mat4& view, glm::mat4& projection, glm::vec3 viewPos) {

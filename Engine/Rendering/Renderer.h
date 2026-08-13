@@ -8,10 +8,13 @@
 #include "Shader.h"
 
 class Renderer {
-    TextureLoader &textureLoader_;
-
 public:
-    explicit Renderer(TextureLoader &textureLoader);
+    static Renderer& instance();
+    Renderer() = default;
+    Renderer(const Renderer&) = delete;
+    Renderer& operator=(const Renderer&) = delete;
+    Renderer(Renderer&&) = delete;
+    Renderer& operator=(Renderer&&) = delete;
 
     static void applyLights(Shader* shader, const std::vector<Light>& lights);
     void buildBatches(std::vector<RenderObject>& objects, std::unordered_map<Shader*, std::vector<RenderObject*>>& batches);

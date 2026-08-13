@@ -7,6 +7,10 @@ file(GLOB_RECURSE ENGINE_SOURCES
 
 add_library(engine STATIC
         ${ENGINE_SOURCES}
+        Resources/ResourceManager.cpp
+        Resources/ResourceManager.h
+        Core/Time.cpp
+        Core/Time.h
 
 )
 

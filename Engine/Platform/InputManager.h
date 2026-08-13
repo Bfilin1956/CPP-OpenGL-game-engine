@@ -3,8 +3,15 @@
 #include "Window.h"
 
 class InputManager {
+    static bool get(const std::unordered_map<SDL_Scancode, bool>& map, SDL_Scancode key);
 public:
     static InputManager& instance();
+    InputManager() = default;
+    InputManager(const InputManager&) = delete;
+    InputManager& operator=(const InputManager&) = delete;
+    InputManager(InputManager&&) = delete;
+    InputManager& operator=(InputManager&&) = delete;
+
     void setWindow(const Window &window);
     void update();
     bool isHeld(SDL_Scancode key) const;
@@ -25,7 +32,4 @@ private:
     std::unordered_map<SDL_Scancode, bool> released_;
 
     bool quit_ = false;
-
-private:
-    static bool get(const std::unordered_map<SDL_Scancode, bool>& map, SDL_Scancode key);
 };
