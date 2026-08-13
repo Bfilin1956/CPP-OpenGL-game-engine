@@ -1,9 +1,8 @@
 #include "Shader.h"
 
-#include <GL/glew.h>
 #include <glm/gtc/type_ptr.hpp>
 
-Shader::Shader(const unsigned int id) : id_(id){}
+Shader::Shader(GLuint id) : id_(id){}
 
 void Shader::use() const {
     glUseProgram(id_);

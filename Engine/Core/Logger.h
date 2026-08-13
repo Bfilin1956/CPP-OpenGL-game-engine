@@ -9,16 +9,14 @@ enum class MsgType : uint16_t {
 };
 
 class Logger {
-    std::string get_current_time_formatted(const MsgType id);
+    std::string get_current_time_formatted(MsgType id);
     public:
-    void print_log(const std::string_view message, const MsgType id = MsgType::Undefined);
+    void print_log(std::string_view message, MsgType id = MsgType::Undefined);
     static Logger &instance();
-    private:
-    Logger() = default;
 
+    Logger() = default;
     Logger(const Logger&) = delete;
     Logger& operator=(const Logger&) = delete;
-
     Logger(Logger&&) = delete;
     Logger& operator=(Logger&&) = delete;
 };

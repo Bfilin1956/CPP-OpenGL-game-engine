@@ -8,8 +8,14 @@
 #include <assimp/postprocess.h>
 #include <iostream>
 
-std::vector<Texture> ModelLoader::loadMaterialTextures(TextureLoader &texture_loader, aiMaterial *mat,
-                                                       aiTextureType type, const std::string &typeName) {
+
+
+ModelLoader &ModelLoader::instance() {
+    static ModelLoader inst;
+    return inst;
+}
+
+std::vector<Texture> ModelLoader::loadMaterialTextures(TextureLoader &texture_loader, aiMaterial *mat, aiTextureType type, const std::string &typeName) {
     std::vector<Texture> textures;
     for (unsigned int i = 0; i < mat->GetTextureCount(type); i++) {
         aiString str;
@@ -69,34 +75,19 @@ Mesh ModelLoader::processMesh(TextureLoader &texture_loader, aiMesh *mesh, aiSce
     // vertices
     for (unsigned int i = 0; i < mesh->mNumVertices; i++) {
         Vertex v{};
-
-        v.position = {
-            mesh->mVertices[i].x,
-            mesh->mVertices[i].y,
-            mesh->mVertices[i].z
-        };
-
-        v.normal = {
-            mesh->mNormals[i].x,
-            mesh->mNormals[i].y,
-            mesh->mNormals[i].z
-        };
-
+        v.position = { mesh->mVertices[i].x, mesh->mVertices[i].y, mesh->mVertices[i].z };
+        v.normal = { mesh->mNormals[i].x, mesh->mNormals[i].y, mesh->mNormals[i].z };
         if (mesh->mTextureCoords[0]) {
-            v.texCoords = {
-                mesh->mTextureCoords[0][i].x,
-                mesh->mTextureCoords[0][i].y
-            };
+            v.texCoords = { mesh->mTextureCoords[0][i].x, mesh->mTextureCoords[0][i].y };
         } else {
             v.texCoords = {0.0f, 0.0f};
         }
-
         vertices.push_back(v);
     }
 
     // indices
     for (unsigned int i = 0; i < mesh->mNumFaces; i++) {
-        aiFace face = mesh->mFaces[i];
+        const aiFace face = mesh->mFaces[i];
         for (unsigned int j = 0; j < face.mNumIndices; j++) {
             indices.push_back(face.mIndices[j]);
         }
